@@ -28,6 +28,7 @@ const port = process.env.PORT;//import từ file env để dùng port
 app.use(express.static(`${__dirname}/public`));
 
 
+
 // flash
 app.use(cookieParser('dasdas312'));
 app.use(session({ cookie:{maxAge:60000 }}));

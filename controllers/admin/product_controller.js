@@ -141,12 +141,13 @@ module.exports.createPost = async (req, res) => {
     }
     else {
         req.body.position = parseInt(req.body.position);
-    }     
-    if(req.file){//check có gửi ảnh thì mới gán nó vào
-        req.body.thumbnail= `/uploads/${req.file.filename}`;// truyền giá trị của file ảnh vào cho body thumbnail 
-    //tạo mới sản phẩm thì truyền object vào product
-    // thay object đó bằng object của body đã  gửi trước đó
-    }
+    }    
+    //khi upload ảnh trên local 
+    // if(req.file){//check có gửi ảnh thì mới gán nó vào
+    //     req.body.thumbnail= `/uploads/${req.file.filename}`;// truyền giá trị của file ảnh vào cho body thumbnail 
+    // //tạo mới sản phẩm thì truyền object vào product
+    // // thay object đó bằng object của body đã  gửi trước đó
+    // }
     const product = new Product(req.body);
     await product.save(); 
     // lưu sản phẩm, tự đông kết nối đến trường dữ liệu thích hợp
