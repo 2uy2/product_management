@@ -1,7 +1,6 @@
 const express = require("express")
 const multer = require('multer') //multer để load file...
-const cloudinary = require('cloudinary').v2
-const streamifier = require('streamifier')
+
 const router = express.Router();
 // const storageMulter = require("../../helpers/storageMulter");
 // const upload = multer({storage:storageMulter()}); //upload sử dụng cho multer,
@@ -9,17 +8,13 @@ const router = express.Router();
 //  dest là đường dẫn chuyền vào thư mục upload
 // đường dẫn mặc định(static) là public,nhưng chỉ áp dụng cho file pug,
 
-//cloudianry
-cloudinary.config({ 
-  cloud_name: 'dnw0atqag', 
-  api_key: '796714845385617', 
-  api_secret: 'Q0CbkpKMEQ79rAWKjfWtskejlJ0'
-});
-//end cloudinary
+
 const upload = multer();
 
 const controller = require("../../controllers/admin/product_controller");
 const validate = require("../../validates/admin/product_validate");
+
+const uploadCloud = require("../../middlewares/admin/uploadCloud_middleware");
 
 router.get('/', controller.index); //từ hàm controller ta sử dụng hàm index
 router.patch("/change-status/:status/:id", controller.changeStatus); //hai chấm để truyền data động
@@ -33,40 +28,8 @@ router.get('/create', controller.create); //get là phương thức để gọi 
 router.post(
     `/create`,
     upload.single('thumbnail'),
-    function (req, res, next) {
-        if (req.file){
-            let streamUpload = (req) => {
-            return new Promise((resolve, reject) => {
-                let stream = cloudinary.uploader.upload_stream(
-                    (error, result) => {
-                        if (result) {
-                            resolve(result);
-                        } else {
-                            reject(error);
-                        }
-                    }
-                );
-
-                streamifier.createReadStream(req.file.buffer).pipe(stream);
-            });
-        };
-        async function upload(req) {
-            let result = await streamUpload(req);
-            console.log(result);
-            //gán giá trị cho thumnail bằng cloud đã gửi
-            req.body[req.file.fielname] = result.secure_url//lấy ra name file đã gửi, 
-            // tăng tính linh động khi gọi tên
-            next();  
-           
-        }
-
-        upload(req);
-        }
-        
-        else{
-            next();
-        }
-    },
+    uploadCloud.upload,
+    
     validate.createPost, //middleware , hàm trung gian kiểm tra thảo mãn không,
     //  nếu có thì next tiếp
     controller.createPost); //post phương thức để thêm item

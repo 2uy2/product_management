@@ -142,6 +142,7 @@ module.exports.createPost = async (req, res) => {
     else {
         req.body.position = parseInt(req.body.position);
     }    
+    //xử lí up ảnh onl bên router
     //khi upload ảnh trên local 
     // if(req.file){//check có gửi ảnh thì mới gán nó vào
     //     req.body.thumbnail= `/uploads/${req.file.filename}`;// truyền giá trị của file ảnh vào cho body thumbnail 
