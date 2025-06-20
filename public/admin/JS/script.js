@@ -40,7 +40,7 @@ if (formSearch) {
 }
 // End from search
 
-// Pagination
+// PaginationAdd commentMore actions
 const buttonPagination = document.querySelectorAll("[button-pagination]");
 if (buttonPagination.length > 0) {
   let url = new URL(window.location.href);

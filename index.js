@@ -5,12 +5,13 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('express-flash'); 
 
+//cài đặt evn
+require("dotenv").config();
 
 const route = require("./routes/client/index_route"); // import route clinet
 const routeAdmin = require("./routes/admin/index_route"); // import route adimn   
 
-//cài đặt evn
-require("dotenv").config();
+
 
 const database = require("./config/database");//nhúng file databasse
 database.connect();// gọi tên hàm cần sử dụng trong file database
