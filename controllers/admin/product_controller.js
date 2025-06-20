@@ -26,6 +26,8 @@ module.exports.index= async (req, res) => {
     if (objectSearch.regex){
         find.title = objectSearch.regex    ;
     }
+    //end search
+   
    //pagination
    const countProducts = await Product.countDocuments(find); // đếm số lượng object dữ liệu được gọi đến
     let objectPagination = paginationHelpers(
@@ -36,9 +38,21 @@ module.exports.index= async (req, res) => {
         req.query,
         countProducts
     );
-      
+    //end pagination
+    //sort//
+   let sort={};
+   if(req.query.sortKey && req.query.sortValue){ // kiểm tra xem trên url 
+   // có trả về hai param đó không
+        sort[req.query.sortKey]= req.query.sortValue;
+   }
+   else{
+        sort.position="desc";//nếu như chưa click thì mặc đinh là xếp theo position
+   }
+   
+   //end sort//
+
     const products = await Product.find(find) // hàm xuất dữ liệu ra
-    .sort({position:"desc"})//sắp xếp giảm dần, để sản phẩm thêm sau được lên đầu
+    .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);//hàm limit dùng để giới hạn dữ liệu được gọi ra
      // hàm skip dùng để qua những object đầu trong dữ liệu
