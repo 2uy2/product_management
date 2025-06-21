@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 var methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -16,7 +17,7 @@ const routeAdmin = require("./routes/admin/index_route"); // import route adimn
 const database = require("./config/database");//nhúng file databasse
 database.connect();// gọi tên hàm cần sử dụng trong file database
 
-const systemConfig = require("./config/system")//import config system
+const systemConfig = require("./config/system");//import config system
 
 const app = express();
 app.use(methodOverride('_method'));
@@ -36,6 +37,9 @@ app.use(session({ cookie:{maxAge:60000 }}));
 app.use(flash());
 // end flash
 
+//tinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+//end tinyMCE
 
 //app locals variables, áp biến đó cho toàn cục, chỉ áp dụng cho file render, ở đây là file PUG
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
