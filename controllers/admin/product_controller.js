@@ -48,7 +48,6 @@ module.exports.index= async (req, res) => {
    else{
         sort.position="desc";//nếu như chưa click thì mặc đinh là xếp theo position
    }
-   
    //end sort//
 
     const products = await Product.find(find) // hàm xuất dữ liệu ra
@@ -167,6 +166,7 @@ module.exports.createPost = async (req, res) => {
     await product.save(); 
     // lưu sản phẩm, tự đông kết nối đến trường dữ liệu thích hợp
     res.redirect(`${systemConfig.prefixAdmin}/products`);
+    req.flash("success",`Bạn đã cập nhật trạng thái thành công`);
 }
 //END [post] admin/products/create
 
