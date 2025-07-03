@@ -1,6 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/select-tree.pug
 
 block main
     +alert-error(5000)
@@ -25,21 +25,16 @@ block main
         )
         div(class="form-group")
             label(for="parent_id") danh mục cha
-            input(
-                type="text"
-                class="form-control"    
-                id="parent_id" 
-                name="parent_id"
-                
-        )
-
-        //- select(
-        //- class="form-control"
-        //- id="parent_id"
-        //- name="parent_id"
-        //- )
-        //- option(value="") --Chọn danh mục cha--
-           
+        
+            select(
+            class="form-control"
+            id="parent_id"
+            name="parent_id"
+            )
+                option(value="") --Chọn danh mục cha--
+                if(records)
+                    +select-tree(records)  
+            
         div(class="form-group")
             label(for="desc") Mô tả
             textarea(
@@ -49,25 +44,28 @@ block main
                 rows="5"
         )
         div(
-            class="form-group"
-            upload-image
+        class="form-group"
+        upload-image
         )
-        label(for="thumbnail") Ảnh
-        input(
-            type="file"
-            class="form-control-file"
-            id="thumbnail"
-            name="thumbnail"
-            accept="image/*"
-            upload-image-input
-        )
-        span(class="box-image")
+            label(for="thumbnail") Ảnh
+            input(
+                type="file"
+                upload-image-input
+                class="form-control-file"
+                id="thumbnail"
+                name="thumbnail"
+                accept="image/*"
+            )
             img(
                 src=""
-                upload-image-preview 
+                upload-image-preview
                 class="image-preview"
             )
-            span(class="image-close") x
+            button(
+                class="btn btn-primary d-none"
+                button-close-image
+            ) x
+            
         div(class="form-group")
             label(for="position") Vị trí
             input(
@@ -103,6 +101,6 @@ block main
                 class="btn btn-primary"
             ) Tạo mới 
 
-    script(src="/admin/js/product.js")
+    script(src="/admin/js/product.js" type="module")
     
            

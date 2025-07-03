@@ -4,8 +4,8 @@ module.exports.createPost = async (req,res,next)=>{
         res.redirect(req.get("referer"));
         return ;//return fail để ngăn chặn thực hiện dòng code phía dưới
     }
-    if(req.body.title.length<8){
-        req.flash("error",`Vui lòng nhập ít nhất 8 kí tự`);
+    if(req.body.title.length<2){
+        req.flash("error",`Vui lòng nhập ít nhất 2 kí tự`);
         res.redirect(req.get("referer"));
         return ;//return fail để ngăn chặn thực hiện dòng code phía dưới
     }
@@ -19,8 +19,8 @@ module.exports.editPatch = async (req,res,next)=>{
         res.redirect(req.get("referer"));
         return ;//return fail để ngăn chặn thực hiện dòng code phía dưới
     }
-    if(req.body.title.length<8){
-        req.flash("error",`Vui lòng nhập ít nhất 8 kí tự`);
+    if(req.body.title.length<2){
+        req.flash("error",`Vui lòng nhập ít nhất 2 kí tự`);
         res.redirect(req.get("referer"));
         return ;//return fail để ngăn chặn thực hiện dòng code phía dưới
     }

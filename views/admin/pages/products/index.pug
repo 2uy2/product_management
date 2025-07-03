@@ -9,27 +9,27 @@ block main
   +alert-success("5000")
   h1 Trang danh sách sản phẩm
   
-  .card.mb-3 
-    .card-header Bộ lọc và tìm kiếm 
-    .card-body
-      .col-6 
-      .row
-        .col-6
-          +filterStatus(filterStatus)
-        .col-6
-          +search(keyword)
+    .card.mb-3 
+      .card-header Bộ lọc và tìm kiếm 
+      .card-body
+        .col-6 
+        .row
+          .col-6
+            +filterStatus(filterStatus)
+          .col-6
+            +search(keyword)
 
-     
-  .card.mb-3 
-    .card-header Danh sách
-    .card-body 
-      .row 
-        .col-8 
-          +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-        .col-4 
-          a(
-            href=`${prefixAdmin}/products/create`
-            class="btn btn-outline-success"
+      
+    .card.mb-3 
+      .card-header Danh sách
+      .card-body 
+        .row 
+          .col-8 
+            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+          .col-4 
+            a(
+              href=`${prefixAdmin}/products/create`
+              class="btn btn-outline-success"
             ) + Thêm mới
 
   .card.mb-3 
@@ -63,7 +63,7 @@ block main
                   type="checkbox" 
                   name =`id`
                   value=item.id)
-              td #{index+1}  
+              td #{pagination.limitItems*(pagination.currentPage - 1)+(index+1)} 
               td
                 img(
                   src=item.thumbnail
@@ -124,5 +124,5 @@ block main
       id = "form-delete-item"
       data-path =`${prefixAdmin}/products/delete`
       ) 
-  script(src="/admin/JS/product.js")
+  script(src="/admin/JS/product.js" type="module")
 

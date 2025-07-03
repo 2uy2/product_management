@@ -3,12 +3,12 @@ include ../../mixins/alert.pug
 
 block main
   +alert-error(5000)
+  +alert-success(5000)
 
   h1(class="mb-4") Tạo mới sản phẩm 
-  
 
   form(
-    action=`${prefixAdmin}/products/create`
+    action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
     id= "form-create-product"
     method= "POST"
     enctype="multipart/form-data"
@@ -21,53 +21,20 @@ block main
         id="title"
         name="title"
         required
+        value=record.title
       )
     div(class="form-group")
       label(for="desc") Mô tả
       textarea(
-        class="form-control textarea-mce"
+        class="form-control"
         id="desc"
         name="description"
         rows="5"
-      )
-    div(class="form-group")
-      label(for="content") Nội dung
-      textarea(
-        class="form-control "
-        id="content"
-        name="content"
-        rows="5"
-      )
-    div(class="form-group")
-      label(for="price") Giá
-      input(
-        type="number"
-        class="form-control"
-        id="price"
-        name="price"
-        value="0"
-        min="0"
-      )
-    div(class="form-group")
-    label(for="discout") % Giảm giá
-    input(
-      type="number"
-      class="form-control"
-      id="discout"
-      name="discountPercentage"
-      value="0"
-      min="0"
-    )
-    div(class="form-group")
-      label(for="stock") Số lượng
-      input(
-        type="number"
-        class="form-control"
-        id="stock"
-        name="stock"
-        value="0"
-        min="0"
-      )
+        value=record.description 
+      ) #{record.description}
+   
+   
+    
       //trong ô input tuỳ chỉnh class để CSS đẹp, accept là chỉ cho phép gửi file ảnh
       //type là loại file
     div(
@@ -84,7 +51,7 @@ block main
         accept="image/*"
       )
       img(
-        src=""
+        src= record.thumbnail
         upload-image-preview
         class="image-preview"
       )
@@ -102,6 +69,7 @@ block main
         name="position"
         placeholder="Tự động tăng"
         min="1"
+        value= record.position
       )
     div(class="form-group form-check form-check-inline")
       input(
@@ -110,7 +78,7 @@ block main
         id="statusActive"
         name="status"
         value="active"
-        checked
+        checked=(record.status == `active` ? true : false)
       )
       lable(for="statusActive" class="form-check-label") Hoạt động 
     div(class="form-group form-check form-check-inline")
@@ -120,12 +88,13 @@ block main
         id="statusActive"
         name="status"
         value="inactive"
+        checked=(record.status == `inactive` ? true : false)
         )
       lable(for="statusActive" class="form-check-label") Dừng Hoạt động 
     div(class="form-group")
       button(
         type="submit"
         class="btn btn-primary"
-      ) Tạo mới
+      ) Cập nhật
 
-  script(src="/admin/js/product.js" type="module")
+  script(src="/admin/js/product-category.js" type="module")
