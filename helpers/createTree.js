@@ -16,11 +16,9 @@ const createTree = (arr, parentId = "")=> {
     });
     return tree;
 }
-
 module.exports.tree = (arr, parentId = "") => {
     count =0;
     const tree = createTree(arr, parentId="");//phải tạo hàm tree 
     // vì module không cho gọi lại chính nó nếu chưa import
     return tree;
-    
 }

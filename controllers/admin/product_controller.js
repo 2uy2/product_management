@@ -4,6 +4,10 @@ const systemConfig = require("../../config/system");
 const filterStatusHelpers= require ("../../helpers/filterStatus");
 const searchHelpers = require("../../helpers/search");
 const paginationHelpers = require ("../../helpers/paganiton");
+const createTreeHelper = require("../../helpers/createTree");
+const ProductCategory = require("../../models/product-category_model")
+const Account = require("../../models/acccount_model")
+
 
 // get /admin/products
 module.exports.index= async (req, res) => {  
@@ -57,8 +61,29 @@ module.exports.index= async (req, res) => {
      // hàm skip dùng để qua những object đầu trong dữ liệu
     //   end pagination 
     // end get products
+
+   for (const product of products) {
+        //lấy ra thông tin người tạo
+        const user = await Account.findOne({
+            _id:product.createdBy.account_id
+        });
+        if(user){
+            product.accountFullName=user.fullName ;//  thêm thuộc tính vào product   
+        }
+        //lấy ra thông tin người cập nhật gần nhất
+        const updatedBy=product.updatedBy[product.updatedBy.length-1];
+        if(updatedBy){
+            const userUpdated = await Account.findOne({
+            _id:updatedBy.account_id
+        });
+
+        updatedBy.accountFullName= userUpdated.fullName;
+        }
+        
+        
+   }  
     res.render("admin/pages/products/index",{
-        prefitAdmin :systemConfig.prefixAdmin,
+        prefixAdmin :systemConfig.prefixAdmin,
         pageTitle:"danh sách sản phẩmmmm",
         products:products,
         filterStatus:filterStatus,
@@ -73,8 +98,14 @@ module.exports.index= async (req, res) => {
 module.exports.changeStatus= async (req, res) => {  
     const status = req.params.status;
     const id = req.params.id;
-   
-    await Product.updateOne({_id :id},{status:status});//update một sản phẩm dùng lênnhj updateOne
+    const updatedBy={
+        account_id:res.locals.user.id,
+        updatedAt: new Date(),
+    }
+
+    await Product.updateOne({_id :id},{
+        $push:{updatedBy:updatedBy},
+        status:status});//update một sản phẩm dùng lênnhj updateOne
     // tham số 1: địa chỉ sản phẩm cần update, tham số hai trường update, gán param vào các trường dữ liệu cần thay đổi
     req.flash("success","Bạn đã cập nhật trạng thái thành công!");// gọi hàm flash ra để sử dụng
     res.redirect(req.get("referer"));//khi submit trả về trang trước khi submit
@@ -88,20 +119,33 @@ module.exports.changeMulti= async (req, res) => {
             // các biến được chia nhau thành từng form-group để tránh nhầm lẫn
     const type = req.body.type;
     const ids = req.body.ids.split(", ");//đổi thành dạng mảng
+    const updatedBy={
+        account_id:res.locals.user.id,
+        updatedAt: new Date(),
+    }
     switch (type) {
         case "active":
-            await Product.updateMany({_id: { $in: ids}},{status:"active"});
+            await Product.updateMany({_id: { $in: ids}},{
+                status:"active",
+                $push:{updatedBy:updatedBy},
+            });
             req.flash("success",`Bạn đã cập nhật trạng thái thành công ${ids.length} sản phẩm!`); //TỪ ID sản phẩm được gọi 
             //                                                                  ta gọi hàm length
             break;
         case "inactive":
-            await Product.updateMany({_id: { $in: ids}},{status:"inactive"});
+            await Product.updateMany({_id: { $in: ids}},{status:"inactive",
+                $push:{updatedBy:updatedBy},});
             req.flash("success",`Bạn đã cập nhật trạng thái thành công ${ids.length} sản phẩm!`);    
             break;
         case "delete-all":
             await Product.updateMany({_id: { $in: ids}},{
-          deleted: true,
-          deletedAt: new Date()
+            deleted: true,
+        //   deletedAt: new Date()
+            deletedBy:{
+                account_id:res.locals.user.id,
+                deletedAt:new Date(),
+            }  ,
+            $push:{updatedBy:updatedBy},
         })
         req.flash("success",`Bạn đã xoá thành công ${ids.length}sản phẩm!`);
             break;
@@ -109,8 +153,10 @@ module.exports.changeMulti= async (req, res) => {
             for (const item of ids) {
                 let [id,position] = item.split("-");
                 position= parseInt(position);//ép thành kiểu number
+                
                 await Product.updateOne({ _id : id }, {
-                    position:  position
+                    position:  position,
+                    $push:{updatedBy:updatedBy},
                 });//tận dụng vòng lặp for để update từng sản phẩm
             }
             req.flash("success",`Bạn đãthay đổi vị trí thành công ${ids.length}sản phẩm!`);
@@ -125,7 +171,11 @@ module.exports.deleteItem= async (req,res) =>{
     const id = req.params.id; // lấy ra id từ id đã tạo trong param
     await Product.updateOne({_id :id}, {
       deleted: true,
-      deletedAt: new Date() //cập nhật thời gian hiện tại
+    //   deletedAt: new Date() //cập nhật thời gian hiện tại
+    deletedBy:{
+        account_id:res.locals.user.id,
+        deletedAt:new Date()
+    }
     });//xoá 1 item,update thêm thời gian thực khi đã xoá 
     req.flash("success",`Bạn đã xoá thành công 1 sản phẩm!`);
     res.redirect(req.get("referer"));//khi submit trả về trang trước khi submit
@@ -134,8 +184,18 @@ module.exports.deleteItem= async (req,res) =>{
 //[get] admin/products/create
 //tạo giao diện để thêm mới một sản phẩm nên dùng phương thức get
 module.exports.create = async(req,res)=>{
+    let find = {
+        deleted: false
+
+    }
+
+    const category = await ProductCategory.find(find);
+    
+    const newCategory = createTreeHelper.tree(category)
+
     res.render("admin/pages/products/create",{
         pageTitle:"danh sách sản phẩmmmm",
+        category: newCategory
     });    
 }
 // end [get] admin/products/create
@@ -155,6 +215,10 @@ module.exports.createPost = async (req, res) => {
     else {
         req.body.position = parseInt(req.body.position);
     }    
+    req.body.createdBy= {
+        account_id:res.locals.user.id// lấy ra phần local.user đã tạo trong phần middleware auth
+
+    }
     //xử lí up ảnh onl bên router
     //khi upload ảnh trên local 
     // if(req.file){//check có gửi ảnh thì mới gán nó vào
@@ -180,10 +244,17 @@ module.exports.edit = async(req,res)=>{
         };
         const product= await Product.findOne(find);//vì chỉ cần một object(một) 
         // chứ k phải là một bản ghi(nhiều) nên dùng findOne()
-        console.log(product);
+        
+
+    const category = await ProductCategory.find({
+        deleted:false
+    });
+    
+    const newCategory = createTreeHelper.tree(category)
         res.render("admin/pages/products/edit", {
             pageTitle:"chỉnh sửa sản phẩm",
-            product: product
+            product: product,
+            category:newCategory
         });
     } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/products`);
@@ -196,18 +267,29 @@ module.exports.editPatch = async(req,res)=>{
     req.body.discountPercentage= parseInt(req.body.discountPercentage);//gán lại và ép kiểu number
     req.body.stock = parseInt(req.body.stock);
    
-    if(req.file){//check có gửi ảnh thì mới gán nó vào
-        req.body.thumbnail= `/uploads/${req.file.filename}`;// truyền giá trị của file ảnh vào cho body thumbnail 
-    //tạo mới sản phẩm thì truyền object vào product
-    // thay object đó bằng object của body đã  gửi trước đó
-    }
+    // if(req.file){//check có gửi ảnh thì mới gán nó vào
+    //     req.body.thumbnail= `/uploads/${req.file.filename}`;// truyền giá trị của file ảnh vào cho body thumbnail 
+    // //tạo mới sản phẩm thì truyền object vào product
+    // // thay object đó bằng object của body đã  gửi trước đó
+    // }
     req.body.position= parseInt(req.body.position);
+    if(req.file){
+        req.body.thumbnail = `/upload/${req.file.filename}`;
+    }
    try {
-        await Product.updateOne({_id:req.params.id},req.body);//tham số đầu để xác định item, tham số số hai là dữ liệu update
-        await req.flash("success","cập nhật thành công")
+        const updatedBy={
+            account_id:res.locals.user.id,
+            updatedAt: new Date(),
+        }
+        
+        await Product.updateOne({_id:req.params.id},{
+            ...req.body,
+            $push:{updatedBy:updatedBy}//sử dụng hàm push trên mongo để khỏi bị ghi đè file
+        });//tham số đầu để xác định item, tham số số hai là dữ liệu update
+        req.flash("success","cập nhật thành công")
     } catch (error) {
         
-        await req.flash("error","cập nhật thất bại")
+         req.flash("error","cập nhật thất bại")
    }
     res.redirect(`${systemConfig.prefixAdmin}/products`);
 }

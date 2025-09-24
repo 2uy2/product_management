@@ -1,11 +1,12 @@
 extends ../../layouts/default.pug 
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main
   +alert-error(5000)
   +alert-success(5000)
-
-  h1(class="mb-4") Tạo mới sản phẩm 
+  if(role.permissions.includes("products_edit"))
+  h1(class="mb-4") chỉnh sửa  sản phẩm 
 
   form(
     action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
@@ -24,9 +25,40 @@ block main
         value=product.title
       )
     div(class="form-group")
+      label(for="product_category_id") danh mục cha
+        
+      select(
+        class="form-control"
+        id="product_category_id"
+        name="product_category_id"
+      )
+        option(value="") --Chọn danh mục cha--
+        if(category)
+          +select-tree(category,1,product.product_category_id)  
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusActive"
+        name="featured"
+        value="1"
+        checked=(product.featured == `1` ? true : false)
+      )
+      lable(for="statusActive" class="form-check-label") nổi bật 
+    div(class="form-group form-check form-check-inline")
+      input( 
+        type="radio"
+        class="form-check-input"
+        id="statusActive"
+        name="featured"
+        value="0"
+        checked=(product.featured == `0` ? true : false)
+        )
+      lable(for="statusActive" class="form-check-label") không nổi bật 
+    div(class="form-group")
       label(for="desc") Mô tả
       textarea(
-        class="form-control"
+        class="form-control textarea-mce"
         id="desc"
         name="description"
         rows="5"
@@ -126,4 +158,4 @@ block main
         class="btn btn-primary"
       ) Cập nhật
 
-  script(src="/admin/js/product.js" type="module")
+    script(src="/admin/js/product.js" type="module")

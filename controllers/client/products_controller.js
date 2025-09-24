@@ -12,7 +12,7 @@ module.exports.index = async (req, res) => {
     return item
   })
 
-   console.log(newProducts);
+   
   res.render("client/pages/products/index.pug", {
     products: newProducts,// kết nối dữ liệu bằng 1 biến
     pageTitle: "Sản Phẩm"

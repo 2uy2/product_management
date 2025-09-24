@@ -139,8 +139,6 @@ module.exports.create= async (req, res) => {
 
     }
 
-  
-
     const records = await ProductCategory.find(find);
     // console.log(records);
     const newrecords = createTreeHelper.tree(records)
@@ -168,7 +166,7 @@ module.exports.createPost = async (req, res) => {
     
 }
 //END [post] admin/products/create
-
+ 
 //[get] admin/products-category/product-category-edit/:id
 module.exports.edit = async(req,res)=>{
     try {
@@ -177,12 +175,19 @@ module.exports.edit = async(req,res)=>{
             deleted:false,
             _id:req.params.id
         };
-        const record= await ProductCategory.findOne(find);//vì chỉ cần một object(một) 
+        const records = await ProductCategory.findOne(find);//vì chỉ cần một object(một) 
         // chứ k phải là một bản ghi(nhiều) nên dùng findOne()
-        console.log(record);
-        res.render("admin/pages/products-category/product-category-edit", {
+        console.log(records);//data của category cần tìm
+        const dataBase = await ProductCategory.find({
+            deleted:false
+        });
+    // console.log(records);
+    const newrecords = createTreeHelper.tree(dataBase) // danh sách cây
+
+        res.render("admin/pages/products-category/edit", {
             pageTitle:"chỉnh sửa sản phẩm",
-            record: record
+            record: records,
+            data:newrecords
         });
     } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/products-category`);
@@ -191,11 +196,11 @@ module.exports.edit = async(req,res)=>{
 //[PATCH] admin/products-category/edit/:id
 module.exports.editPatch = async(req,res)=>{
 
-    if(req.file){//check có gửi ảnh thì mới gán nó vào
-        req.body.thumbnail= `/uploads/${req.file.filename}`;// truyền giá trị của file ảnh vào cho body thumbnail 
-    //tạo mới sản phẩm thì truyền object vào product
-    // thay object đó bằng object của body đã  gửi trước đó
-    }
+    // if(req.file){//check có gửi ảnh thì mới gán nó vào
+    //     req.body.thumbnail= `/uploads/${req.file.filename}`;// truyền giá trị của file ảnh vào cho body thumbnail 
+    // //tạo mới sản phẩm thì truyền object vào product
+    // // thay object đó bằng object của body đã  gửi trước đó
+    // }
    try {
         await ProductCategory.updateOne({_id:req.params.id},req.body);//tham số đầu để xác định item, tham số số hai là dữ liệu update
         await req.flash("success","cập nhật thành công")
@@ -214,10 +219,21 @@ module.exports.detail = async(req,res)=>{
             _id:req.params.id
         }
         const record = await ProductCategory.findOne(find); 
+        let test =0;
+        if(record.parent_id){
+            var find22={
+                deleted:false,
+                _id:record.parent_id
+            }
+            test ++;
+        }
+        const record2 = await ProductCategory.findOne(find22); 
+        
         console.log(record);
-        res.render("admin/pages/products-category/product-category-detail", {
+        res.render("admin/pages/products-category/detail", {
             pageTitle:record.title,
-            record:record
+            record:record,
+            record2:record2
         });
         
     }

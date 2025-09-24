@@ -34,8 +34,9 @@ router.post(
     //  nếu có thì next tiếp
     controller.createPost); //post phương thức để thêm item
 
-//edit item
+//get edit item
 router.get('/edit/:id', controller.edit);
+//patch edit item
 router.patch(
     "/edit/:id",
     upload.single('thumbnail'), //gửi ảnh đơn(single) có trường là thumnail

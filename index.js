@@ -1,10 +1,12 @@
 const express = require('express');
 const path = require('path');
-var methodOverride = require('method-override');
+var methodOverride = require('method-override'); //dùng để nạp module, giả lập PUT, patch,.. khi trình duyệt chỉ hỗ trợ get, post
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('express-flash'); 
+const moment = require("moment");
+
 
 //cài đặt evn
 require("dotenv").config();
@@ -43,6 +45,8 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 //app locals variables, áp biến đó cho toàn cục, chỉ áp dụng cho file render, ở đây là file PUG
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
+
 
 //setting cho pug
 app.set('views', `${__dirname}/views`);

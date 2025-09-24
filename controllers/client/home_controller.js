@@ -1,7 +1,10 @@
-// /index
-module.exports.index=(req, res) => {
+
+// get /index
+module.exports.index= async (req, res) => {
+    
+    
     res.render("client/pages/home/index",{
-        pageTitle: "trang chủ"
+        pageTitle: "trang chủ",
         
     });             
 }

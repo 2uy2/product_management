@@ -8,6 +8,11 @@ block main
     if(record.title)
         h1(class="mb-4") #{record.title}
 
+    if (record.parent_id)
+        if(record2)
+            div(class="mb-4") danh mục cha là #{record2.title}
+    if(record.parent_id=="") 
+        p thẻ cao nhất
     
 
     if (record.thumbnail)
@@ -32,7 +37,7 @@ block main
         div(class="mb-4") !{record.description}
 
     a(
-        href=`${prefixAdmin}/products-category/product-category-edit/${record.id}`
+        href=`${prefixAdmin}/products-category/edit/${record.id}`
         class="btn btn-warning btn-sm ml-1"
     ) Chỉnh sửa
 
