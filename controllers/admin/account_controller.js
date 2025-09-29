@@ -8,7 +8,8 @@ module.exports.index = async (req, res) => {
     let find ={
         deleted : false
     }
-    const records = await Account.find(find).select("-password-token"); // chỉ lấy ra những thông tin tài khoản, 
+    const records = await Account.find(find).select("-password-token"); 
+    // chỉ lấy ra những thông tin tài khoản, 
     // không lấy password token để tránh lộ thông tin
 
     for (const record of records) {

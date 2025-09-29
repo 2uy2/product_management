@@ -11,7 +11,7 @@ module.exports.login = async (req, res) => {
          token: req.cookies.token
       })
       if(user){
-         res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
+        return  res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
       }
       else{
         
