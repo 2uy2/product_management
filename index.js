@@ -33,6 +33,7 @@ app.use(express.static(`${__dirname}/public`));
 
 
 
+
 // flash
 app.use(cookieParser('dasdas312'));
 app.use(session({ cookie:{maxAge:60000 }}));
@@ -51,6 +52,9 @@ app.locals.moment = moment;
 //setting cho pug
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'pug');
+
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 
 //router
 //gọi hàm trong file router                                      

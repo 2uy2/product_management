@@ -22,7 +22,7 @@ if (buttonsStatus.length > 0) {
 const formSearch = document.querySelector("#form-search");
 if (formSearch) {
   let url = new URL(window.location.href); // trả về url hiện tại của trang web
-
+  
   formSearch.addEventListener("submit", (e) => {
     e.preventDefault();
     //bắt dữ liệu của input trong form sau khi submit form
