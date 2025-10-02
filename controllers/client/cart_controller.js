@@ -94,4 +94,4 @@ module.exports.update = async (req, res) => {
     req.flash("success","đã cạp nhật số lượng")
     res.redirect(req.get("referer"));//khi submit trả về trang trước khi submit
 }
-    
+//hết cập nhật số lượng trong giỏ hàng
