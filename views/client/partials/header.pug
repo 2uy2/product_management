@@ -1,13 +1,19 @@
 include ../mixins/sub-menu.pug
 header.header 
-    .container 
+    .container
+       
         .row.align-items-center 
+            .col-1 
+                 button(
+                    class="btn btn-secondary"
+                    button-go-back
+                ) Trở lại 
             .col-3
                 .inner-logo
                     a(href="/")
                         img(src="/images/logo.jpg",alt="logo")
 
-            .col-5 
+            .col-4 
                 form(
                     action="/search"
                     method="GET"
