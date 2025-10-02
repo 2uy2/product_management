@@ -18,7 +18,7 @@ module.exports.requireAuth =async (req,res,next)=>{
             })
             res.locals.user = user; // tạo một biến local,
             res.locals.role =role;
-            console.log("bbbb");
+          
             next();
         }
     }
