@@ -38,6 +38,7 @@ module.exports.addPost = async (req, res) => {
     req.flash("success", "thêm vào giỏ hàng thành công")
     res.redirect(req.get("referer"));
 }
+// get /cart
 module.exports.index=async (req,res)=>{
     const cartId = req.cookies.cartId ;
     const cart = await Cart.findOne({
@@ -63,4 +64,19 @@ module.exports.index=async (req,res)=>{
         pageTitle:"Trang giỏ hàng",
         cartDetail:cart   
     })
+}
+//get /cart/delete/poductId
+module.exports.delete = async (req, res) => {
+    const cartId = req.cookies.cartId ;
+    const productId = req.params.productId;
+   await Cart.updateOne({
+    _id:cartId,
+   },
+   {
+    "$pull":{products:{"product_id":productId}}//truy cập vào products và tìm điều kiện productid
+    //hàm pull trong mongoo giúp xoá( ngược lại với push)
+   }
+)
+    req.flash("success","đã xoá sản phẩm khỏi giỏ hàng");
+    res.redirect(req.get("referer"));//khi submit trả về trang trước khi submit
 }
