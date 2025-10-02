@@ -34,12 +34,12 @@ block main
                                     td #{item.productInfo.priceNew}$
                                     td 
                                         input(
-                                            type="text" 
+                                            type="number" 
                                             name="quantity"
                                             value=item.quantity
                                             min="1"
-                                            item-id=item.product_id
-                                            style="width=60px"
+                                            product-id=item.product_id
+                                            style="width: 60px"
                                         )
                                     td #{item.totalPrice}$
                                     td 
@@ -52,4 +52,6 @@ block main
                 h3(class="text-right") Tổng đơn hàng :#{cartDetail.totalPrice}$
 
                 div(class="text-right mt-3")
-                    a(href="/checkout" class="btn btn-success") Thanh toán                              
+                    a(href="/checkout" class="btn btn-success") Thanh toán   
+
+    script(src="/JS/cart.js")                            
