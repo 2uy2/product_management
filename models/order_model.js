@@ -21,4 +21,4 @@ const orderSchema = new mongoose.Schema({
 );
 const Order = mongoose.model("Order",orderSchema, "orders");
 //tham số đầu là tên để gọi dữ liệu, tham số hai là khung, tham số ba là bảng dữ liệu
-module.exports = Role;
+module.exports = Order;
