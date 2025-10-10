@@ -8,7 +8,7 @@ header.header
                     class="btn btn-secondary"
                     button-go-back
                 ) Trở lại 
-            .col-3
+            .col-2
                 .inner-logo
                     a(href="/")
                         img(src="/images/logo.jpg",alt="logo")
@@ -30,7 +30,7 @@ header.header
                             type="submit"
                             class="btn btn-primary"
                         ) Tìm
-            .col-4 
+            .col-5 
                 .inner-menu
                     ul 
                         li 
@@ -41,4 +41,6 @@ header.header
                                 +sub-menu(layoutProductsCategory,pathProduct)
                         li 
                             a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.totalQuantity:"0"})
+                        li 
+                            a(href="/user/register") Đăng ký
 
