@@ -16,7 +16,7 @@ module.exports.addPost = async (req, res) => {
     if (existProductInCart) { //nếu sản phẩm đã có trên giả hàng trc đó r thì chỉ cần
     // cập nhật quantity
         const newQuantity = existProductInCart.quantity+quantity;
-        await Cart.updateOne({//cú pháp cập nhật giá trị mảng trong hàm của data trong mongoo
+        await Cart.updateOne({//cú pháp cập nhật giá trị object trong mảng  hàm của data trong mongoo
             _id:cartId,
             'products.product_id':productId //cú pháp tìm kiếm
         },{
