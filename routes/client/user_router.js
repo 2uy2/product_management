@@ -7,6 +7,7 @@ router.get('/register',controller.register);//từ hàm controller ta sử dụn
 router.post('/register',validate.registerPost,controller.registerPost);//từ hàm controller ta sử dụng hàm register
 router.get('/login',controller.login);
 router.post("/login",validate.loginPost, controller.loginPost);
+router.get("/logout", controller.logout);
 
 
 module.exports=router;

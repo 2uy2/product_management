@@ -6,6 +6,7 @@ const chekcoutRoute = require("./checkout_route");
 const userRoute = require("./user_router");
 
 const categoryMiddleware = require("../../middlewares/client/category_middleware");
+const userMiddleware = require("../../middlewares/client/user_middleware");
 const cartMiddleware = require("../../middlewares/client/cart_middleware");
 
 module.exports = (app) => {
@@ -15,6 +16,7 @@ module.exports = (app) => {
     // nào cũng dùng productsCategory-Tree nên ta dùng app use, tức là tất cả 
     // router đều có thể sử dụng middleware categoryMiddleware
     app.use(cartMiddleware.cartId);
+    app.use(userMiddleware.infoUser);
 
     app.use("/", homeRoute);
 
