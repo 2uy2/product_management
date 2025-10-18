@@ -14,6 +14,7 @@ module.exports.index= async (req, res) => {
     // console.log(req.query.status);// truy vấn từ hàm req vào hàm query 
     // rồi tới biến status sử dụng cho phương thức get
     
+    //search
     let find = {
         deleted: false
     };

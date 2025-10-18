@@ -183,7 +183,7 @@ if (sort){
     const [sortKey,sortValue] = value.split("-");
     console.log(sortKey);
     console.log(sortValue);
-    url.searchParams.set("sortKey",sortKey);//tạo và gán vào param
+    url.searchParams.set("sortKey",sortKey);//tạo và gán vào params
     url.searchParams.set("sortValue",sortValue);
     window.location.href = url.href; //Nó chuyển (redirect) trình duyệt sang một địa chỉ URL mới, 
     // cụ thể là giá trị url.href.
