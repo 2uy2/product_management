@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router();
 const controller = require("../../controllers/client/user_controller");   
 const validate = require("../../validates/client/user_validate");   
+const authMiddleware = require("../../middlewares/client/auth_middleware")
 
 router.get('/register',controller.register);//từ hàm controller ta sử dụng hàm register
 router.post('/register',validate.registerPost,controller.registerPost);//từ hàm controller ta sử dụng hàm register
@@ -14,5 +15,6 @@ router.get("/password/otp", controller.otpPassword);
 router.post("/password/otp", controller.otpPasswordPost);
 router.get("/password/reset", controller.resetPassword);
 router.post("/password/reset",validate.resetPasswordPost, controller.resetPasswordPost);
+router.get("/info",authMiddleware.requireAuth,controller.info);
 
 module.exports=router;
