@@ -14,7 +14,7 @@ module.exports.category=async (req,res,next)=>{
         deleted:false,
     });
     const newProductsCategory = createTreeHelper.tree(productsCategory);
-    res.locals.layoutProductsCategory= newProductsCategory;
+    res.locals.layoutProductsCategory= newProductsCategory; //biến toàn cục cho phần views
     
     
     next();

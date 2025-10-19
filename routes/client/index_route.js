@@ -8,6 +8,7 @@ const userRoute = require("./user_router");
 const categoryMiddleware = require("../../middlewares/client/category_middleware");
 const userMiddleware = require("../../middlewares/client/user_middleware");
 const cartMiddleware = require("../../middlewares/client/cart_middleware");
+const settingMiddleware = require("../../middlewares/client/setting_middleware")
 
 module.exports = (app) => {
 
@@ -17,6 +18,7 @@ module.exports = (app) => {
     // router đều có thể sử dụng middleware categoryMiddleware
     app.use(cartMiddleware.cartId);
     app.use(userMiddleware.infoUser);
+    app.use(settingMiddleware.settingGeneral);
 
     app.use("/", homeRoute);
 
