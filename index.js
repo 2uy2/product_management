@@ -63,6 +63,14 @@ route(app); // sử dùng hàm trong file, vì trong
 routeAdmin(app);
 //end router
 
+// thêm trang 404
+app.use((req, res) => {
+  res.status(404).render("client/pages/errors/errors404", {
+    pageTitle: "404 Not Found",
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`) 
 })
