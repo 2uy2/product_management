@@ -3,6 +3,7 @@ const User = require("../../models/user_model")
 //get /chat
 module.exports.index = async (req, res) => {
     const userId = res.locals.user.id;
+    const fullName = res.locals.user.fullName;
     //socketio
     _io.once('connection', (socket) => { //socket  là biếnvsocket con được tạo ra, còn socket tổng là io
         // console.log('a user connected', socket.id);
@@ -13,8 +14,16 @@ module.exports.index = async (req, res) => {
                 user_id: userId,
                 content: content
             })
-            await chat.save()
+            await chat.save();
+
+             //trả data về client
+             _io.emit("SERVER_RETURN_MESSAGE",{
+                user_id:userId,
+                fullName:fullName,
+                content:content
+             })
         })
+ 
     });
     //end socketio
     //lấy ra data
