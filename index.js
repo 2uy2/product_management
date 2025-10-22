@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('express-flash'); 
 const moment = require("moment");
+const http = require('http');
+const { Server} = require("socket.io"); //sử dụng socketio
 
 
 //cài đặt evn
@@ -31,7 +33,13 @@ const port = process.env.PORT;//import từ file env để dùng port
 //setting cho static files, cần chỉ đâu ra là public đâu là private
 app.use(express.static(`${__dirname}/public`));
 
-
+//socketio
+const server = http.createServer(app);
+const io = new Server(server); //khởi tạo socketio
+io.on('connection', (socket) => { //socket  là biếnvsocket con được tạo ra, còn socket tổng là io
+  console.log('a user connected', socket.id);
+ 
+});
 
 
 // flash
@@ -71,6 +79,6 @@ app.use((req, res) => {
 });
 
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`) 
 })
