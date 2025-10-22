@@ -46,7 +46,7 @@ const productSchema = new mongoose.Schema({
   ]
   },
   {
-    timestamps: true // thời gian khởi tạo
+    timestamps: true // thời gian khởi tạo, và thời gian cập nhật
   }
 );
 const Product = mongoose.model("Product",productSchema, "products");
