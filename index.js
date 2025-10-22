@@ -36,10 +36,8 @@ app.use(express.static(`${__dirname}/public`));
 //socketio
 const server = http.createServer(app);
 const io = new Server(server); //khởi tạo socketio
-io.on('connection', (socket) => { //socket  là biếnvsocket con được tạo ra, còn socket tổng là io
-  console.log('a user connected', socket.id);
- 
-});
+global._io=io;//tạo biến toàn cục là io (dùng bất kỳ đâu)
+//end socketio
 
 
 // flash
