@@ -122,7 +122,7 @@ if (fromChangeMulti) {
       })
       inputsId.value = ids.join(", ");//đổi thành dạng mảng
 
-      fromChangeMulti.submit();
+      fromChangeMulti.submit(); //đến đây thì mới submit
     } else {
       alert("Choose one record");
     }
