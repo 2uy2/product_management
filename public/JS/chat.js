@@ -33,7 +33,15 @@ socket.on("SERVER_RETURN_MESSAGE",(data)=>{ //khi nhận được sẽ cập nh�
     <div class="inner-content">${data.content}</div>
     `;
     body.appendChild(div);
+    bodyChat.scrollTop = bodyChat.scrollHeight; //croll cách top một đoạn bằng chiều cao body đó sau khi đã nhận hoặc gửi tin nhắn
     console.log(data.user_id)
     console.log(myId)
 })
 // end SERVER_RETURN_MESSAGE
+
+// scroll chat to bottom (khi load lại trang tin nhắn scroll dưới cùng(tin nhắn mới nhất))
+const bodyChat = document.querySelector(".chat .inner-body")
+if(bodyChat){
+    bodyChat.scrollTop = bodyChat.scrollHeight; //croll cách top một đoạn bằng chiều cao body đó
+}
+// end scroll chat to bottom
