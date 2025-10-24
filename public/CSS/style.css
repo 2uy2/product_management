@@ -285,7 +285,8 @@
 .chat .inner-body {
   padding: 10px;
   max-height: 450px;
-  overflow-y: auto;
+  overflow-y: auto; 
+  /* khi tin nhắn dài quá có thể scroll được */
 }
 
 .chat .inner-body .inner-name {

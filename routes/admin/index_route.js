@@ -11,10 +11,13 @@ const authRoute = require("./auth_route")
 const myAccountRoute = require("./my-account_route")
 const settingRoute = require("./settings-genera_routel")
 
+const authController = require("../../controllers/admin/auth_controller") 
 
 
 module.exports = (app) => {
     const PATH_ADMIN = systemConfig.prefixAdmin;
+
+    app.get(PATH_ADMIN+"/",authController.login)
     app.use(PATH_ADMIN + "/dashboard", authMiddleware.requireAuth, dashboarRoute);
     app.use(PATH_ADMIN + "/products", authMiddleware.requireAuth, productRoute);
     app.use(PATH_ADMIN + "/products-category", authMiddleware.requireAuth, productCategoryRoute);
