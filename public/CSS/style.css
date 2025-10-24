@@ -337,3 +337,15 @@
   cursor: pointer;
 }
 /* End chat */
+
+/* emoji-picker */
+.tooltip{
+  visibility: hidden; 
+  /* biến mất nhưng không chiếm không gian */
+}
+.tooltip.shown{
+  visibility: visible;
+  opacity: 1;
+  /* bỏ làm mờ */
+}
+/* end emoji-picker */
