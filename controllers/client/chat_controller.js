@@ -23,7 +23,15 @@ module.exports.index = async (req, res) => {
                 content:content
              })
         })
- 
+        //nhận typing
+        socket.on("CLIENT_SEND_TYPING",(type)=>{
+            // console.log(type);
+            socket.broadcast.emit("SERVER_RETURN_TYPING",{
+                user_id:userId,
+                fullName:fullName,
+                type:type
+            })
+        })
     });
     //end socketio
     //lấy ra data

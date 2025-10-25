@@ -8,7 +8,8 @@ if (formSendData) {
         const content = e.target.elements.content.value;
         if (content) {
             socket.emit("CLIENT_SEND_MESSAGE", content);
-            e.target.elements.content.value = ""
+            e.target.elements.content.value = "";
+            socket.emit("CLIENT_SEND_TYPING", "hidden"); //ẩn typing khi gửi tin nhắn xong
         }
     })
 }
@@ -19,6 +20,7 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => { //khi nhận được sẽ cập 
     console.log(data);
     const myId = document.querySelector("[my-id]").getAttribute("my-id"); //lấy thuộc tính [my-id]
     const body = document.querySelector(".chat .inner-body");
+    const boxTyping = document.querySelector(".inner-list-typing");
     const div = document.createElement("div");
     let htmlFullName = "";
 
@@ -33,7 +35,8 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => { //khi nhận được sẽ cập 
     ${htmlFullName}
     <div class="inner-content">${data.content}</div>
     `;
-    body.appendChild(div);
+
+    body.insertBefore(div, boxTyping); //đảm bảo tin nhắn vừa gửi được đưa lên trước
     bodyChat.scrollTop = bodyChat.scrollHeight; //croll cách top một đoạn bằng chiều cao body đó sau khi đã nhận hoặc gửi tin nhắn
     console.log(data.user_id)
     console.log(myId)
@@ -47,13 +50,29 @@ if (bodyChat) {
 }
 // end scroll chat to bottom
 
+
+
+
+//show typing 
+var timeOut;
+const showTyping = () => {
+    socket.emit("CLIENT_SEND_TYPING", "show");
+    //nếu người ta ngừng gõ thì không hiện typing
+    clearTimeout(timeOut); //xoá đi hàm timeOut đang chạy trước đó
+    timeOut = setTimeout(() => {
+        socket.emit("CLIENT_SEND_TYPING", "hidden");
+    }, 3000)
+}
+
+//end showTyping
+
 //emoj-picker
 //show Popup
 const buttonIcon = document.querySelector(".button-icon");
-if(buttonIcon){
+if (buttonIcon) {
     const tooltip = document.querySelector('.tooltip');
     Popper.createPopper(buttonIcon, tooltip);
-    buttonIcon.onclick=()=> {
+    buttonIcon.onclick = () => {
         tooltip.classList.toggle('shown');
     }
 }
@@ -61,13 +80,69 @@ if(buttonIcon){
 //inser icon to input
 // document.querySelector('emoji-picker')
 //     .addEventListener('emoji-click', event => console.log(event.detail));
+
+
 const emojPicker = document.querySelector("emoji-picker")
-if (emojPicker){
-    const inputChat = document.querySelector(".chat .inner-form input[name='content']")
-    emojPicker.addEventListener("emoji-click",event=>{
+if (emojPicker) {
+
+    const inputChat = document.querySelector(".chat .inner-form input[name='content']");
+
+    emojPicker.addEventListener("emoji-click", event => {
         const icon = event.detail.unicode;
         console.log(icon);
-        inputChat.value=inputChat.value+icon;
+        inputChat.value = inputChat.value + icon;
+        //đảm bảo khi chèn icon luôn luôn vị trí cuối cùng
+        const end = inputChat.value.length;
+        inputChat.setSelectionRange(end,end);
+        inputChat.focus();
+        showTyping();
+        //end đảm bảo khi chèn icon luôn luôn vị trí cuối cùng
+    })
+
+
+
+
+    // xử lý typing CLIENT_SEND_TYPING
+    inputChat.addEventListener("keyup", () => {
+        showTyping();
     })
 }
 // end emoj-picker
+
+// server return typing
+const elementListTyping = document.querySelector(".chat .inner-list-typing");
+
+
+if (elementListTyping) {
+    socket.on("SERVER_RETURN_TYPING", (data) => {
+        if (data.type == "show") {
+            const existTyping = elementListTyping.querySelector(`[user-id="${data.user_id}"]`);
+            if (!existTyping) {
+                const boxTyping = document.createElement("div");
+                boxTyping.classList.add("box-typing");
+                boxTyping.setAttribute("user-id", data.user_id);
+                boxTyping.innerHTML = `
+                    <div class="inner-name") >${data.fullName}</div>
+                    <div class="inner-dots")>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+        `;
+
+                elementListTyping.appendChild(boxTyping);
+                bodyChat.scrollTop = bodyChat.scrollHeight; //tự scroll xuống khi có typing
+            }
+
+        } else {
+            const boxTypingRemove = elementListTyping.querySelector(`[user-id="${data.user_id}"]`);
+            if (boxTypingRemove) {
+                elementListTyping.removeChild(boxTypingRemove); //xoá thẻ con
+            }
+        }
+
+
+    })
+}
+
+//end server return typing
