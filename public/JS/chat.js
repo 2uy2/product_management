@@ -1,4 +1,8 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js';
+const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-image",{
+    multiple:true,
+    maxFileCount:6
+});
 
 // CLIENT_SEND_MESSAGE
 const formSendData = document.querySelector(".chat .inner-form");
@@ -6,7 +10,10 @@ if (formSendData) {
     formSendData.addEventListener("submit", (e) => {
         e.preventDefault(); //không bị nhảy trang
         const content = e.target.elements.content.value;
-        if (content) {
+        const images = upload.cachedFileArray|| [];
+        console.log(images)
+        if (content || images.length>0) {
+            //gửi ảnh hoặc content lên server
             socket.emit("CLIENT_SEND_MESSAGE", content);
             e.target.elements.content.value = "";
             socket.emit("CLIENT_SEND_TYPING", "hidden"); //ẩn typing khi gửi tin nhắn xong
