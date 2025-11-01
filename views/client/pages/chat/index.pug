@@ -31,6 +31,8 @@ block main
                         
 
                         div(class="inner-list-typing")
+                    .inner-preview-images
+                        div( class="custom-file-container" data-upload-id="upload-image")
                         
                     .inner-foot
                         form(
@@ -42,8 +44,11 @@ block main
                                 placeholder="Nhập nội dung..."
                                 name="content"
                             )
-                            div(class="custom-file-container" data-upload-id="upload-image")
-                            span(class="button-icon btn-light mx-2") <i class="fa-solid fa-face-smile"></i> 
+                            label(class="btn btn-light mx-2 mb-0"
+                                for ="file-upload-with-preview-upload-image")
+                                i.fa-solid.fa-images
+                            span(class="button-icon btn-light mx-2")
+                                i.fa-solid.fa-face-smile
                             button
                                 i.fa-solid.fa-paper-plane
 
