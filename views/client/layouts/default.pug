@@ -7,6 +7,8 @@ html
     link( rel="stylesheet"
       type="text/css"
       href="https://unpkg.com/file-upload-with-preview/dist/style.css")
+
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.css")
     link(rel="stylesheet", href="/CSS/style.css")
 
 
@@ -25,9 +27,16 @@ html
      <!-- socket tạo ra file script này -->
     script(src="/socket.io/socket.io.js")
     script(src="/js/socket.js")
+
+    //- upload nhiều ảnh 
     script(src="https://unpkg.com/file-upload-with-preview/dist/index.iife.js")
  
     //- chèn icon
     script(type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js")
+
+    //-zoom ảnh
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.js")  
+
+
     script(type ="module" src="/js/chat.js")
     script(src="/js/script.js" type="module")

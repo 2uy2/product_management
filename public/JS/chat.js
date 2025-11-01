@@ -1,4 +1,5 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js';
+
 const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-image", {
     multiple: true,
     maxFileCount: 6
@@ -64,13 +65,20 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => { //khi nhận được sẽ cập 
     ${htmlFullName}
     ${htmlContent}
     ${htmlImages}
-    
     `;
+
 
     body.insertBefore(div, boxTyping); //đảm bảo tin nhắn vừa gửi được đưa lên trước
     bodyChat.scrollTop = bodyChat.scrollHeight; //croll cách top một đoạn bằng chiều cao body đó sau khi đã nhận hoặc gửi tin nhắn
-    console.log(data.user_id)
-    console.log(myId)
+    //preview zoom image
+    const boxImage = div.querySelector(".inner-images");
+    if(boxImage){
+        const gallery = new Viewer(boxImage);
+        //đối với ảnh mới upload phải thêm hàm trên lại vì hàm này 
+    // chỉ áp dụng cho các inner-image đã load trước đó(bắt sự kiện khi thẻ đã được load trước đó)
+    }
+    
+    //end preview zoom image
 })
 // end SERVER_RETURN_MESSAGE
 
@@ -177,3 +185,12 @@ if (elementListTyping) {
 }
 
 //end server return typing
+
+//preview zoom image
+const chatBody =  document.querySelector(".chat .inner-body");
+if(chatBody){
+    const gallery = new Viewer(chatBody);
+    //đối với ảnh mới upload phải thêm hàm trên lại vì hàm này 
+    // chỉ áp dụng cho các inner-image đã load trước đó(bắt sự kiện khi thẻ đã được load trước đó)
+}
+//end preview zoom image
