@@ -142,7 +142,7 @@ module.exports.create= async (req, res) => {
     const records = await ProductCategory.find(find);
     // console.log(records);
     const newrecords = createTreeHelper.tree(records)
-    console.log(newrecords);
+    // console.log(newrecords);
     res.render("admin/pages/products-category/create",{
         
         pageTitle:"tạo danh mục",
@@ -154,7 +154,7 @@ module.exports.create= async (req, res) => {
 module.exports.createPost = async (req, res) => {
     const permissions = res.locals.role.permissions;
     if(permissions.includes("products-category_create")){
-        console.log("có quyền");
+        // console.log("có quyền");
     }
     else {
         return ; // return để kết thúc hàm 
@@ -177,14 +177,14 @@ module.exports.createPost = async (req, res) => {
 //[get] admin/products-category/product-category-edit/:id
 module.exports.edit = async(req,res)=>{
     try {
-        console.log(req.params.id);
+        // console.log(req.params.id);
         const find = {
             deleted:false,
             _id:req.params.id
         };
         const records = await ProductCategory.findOne(find);//vì chỉ cần một object(một) 
         // chứ k phải là một bản ghi(nhiều) nên dùng findOne()
-        console.log(records);//data của category cần tìm
+        // console.log(records);//data của category cần tìm
         const dataBase = await ProductCategory.find({
             deleted:false
         });
@@ -236,7 +236,7 @@ module.exports.detail = async(req,res)=>{
         }
         const record2 = await ProductCategory.findOne(find22); 
         
-        console.log(record);
+        // console.log(record);
         res.render("admin/pages/products-category/detail", {
             pageTitle:record.title,
             record:record,

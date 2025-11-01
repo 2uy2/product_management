@@ -44,7 +44,7 @@ module.exports.createPost = async (req, res) => {
         email:req.body.email,
         deleted:false
     })
-    console.log(emailExist) // ỉn ra nếu có
+    // console.log(emailExist) // ỉn ra nếu có
     if(emailExist){ //nếu đã tồn tại email
         req.flash("error","email đã tồn tại");
         res.redirect(`${systemConfig.prefixAdmin}/accounts`);

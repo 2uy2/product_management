@@ -20,7 +20,7 @@ module.exports.generalPatch=async(req,res)=>{
         )
     }
     else {
-        console.log(req.body);
+        // console.log(req.body);
         const record = new SettingGeneral(req.body);
         await record.save();
     }

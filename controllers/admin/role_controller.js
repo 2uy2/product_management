@@ -25,7 +25,7 @@ module.exports.create = async (req, res) => {
 
 //post /admin/role/create
 module.exports.createPost = async (req, res) => { 
-    console.log(req.body); 
+    // console.log(req.body); 
     const record = new Role(req.body);
     await record.save();
     res.redirect(`${systemConfig.prefixAdmin}/roles`);
@@ -35,14 +35,14 @@ module.exports.createPost = async (req, res) => {
 module.exports.edit = async (req, res) => {  
     try {
         const id = req.params.id ;
-        console.log(id);
+        // console.log(id);
         let find = {
             _id:id,
             deleted: false 
         };
         const data = await Role.findOne(find);
         
-        console.log(data);
+        // console.log(data);
         res.render("admin/pages/roles/edit",{
             pageTitle:"sửa nhóm quyền",
             data: data
@@ -72,7 +72,7 @@ module.exports.detail = async(req,res)=>{
             _id:req.params.id
         }
         const data = await Role.findOne(find); 
-        console.log(data);
+        // console.log(data);
         res.render("admin/pages/roles/detail", {
             pageTitle:data.title,
             data:data
@@ -111,7 +111,7 @@ module.exports.permissions= async(req,res)=>{
 module.exports.permissionsPatch= async(req,res)=>{
    try {
     const permissions = JSON.parse(req.body.permissions);//lấy phần json của ô input có name là permissions để chuyển sang dạng string
-    console.log(permissions)
+    // console.log(permissions)
  
     for (const item of permissions) { // duyệt từng phần tử trong object
          

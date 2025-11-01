@@ -1,7 +1,7 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js';
-const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-image",{
-    multiple:true,
-    maxFileCount:6
+const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-image", {
+    multiple: true,
+    maxFileCount: 6
 });
 
 // CLIENT_SEND_MESSAGE
@@ -10,12 +10,17 @@ if (formSendData) {
     formSendData.addEventListener("submit", (e) => {
         e.preventDefault(); //không bị nhảy trang
         const content = e.target.elements.content.value;
-        const images = upload.cachedFileArray|| [];
+        const images = upload.cachedFileArray || [];
         console.log(images)
-        if (content || images.length>0) {
+        if (content || images.length > 0) {
             //gửi ảnh hoặc content lên server
-            socket.emit("CLIENT_SEND_MESSAGE", content);
+            socket.emit("CLIENT_SEND_MESSAGE", {
+                //truyền dữ liệu text trong input và ảnh vào trong một object
+                content: content,
+                images: images
+            });
             e.target.elements.content.value = "";
+            upload.resetPreviewPanel(); //clear select image
             socket.emit("CLIENT_SEND_TYPING", "hidden"); //ẩn typing khi gửi tin nhắn xong
         }
     })
@@ -30,6 +35,8 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => { //khi nhận được sẽ cập 
     const boxTyping = document.querySelector(".inner-list-typing");
     const div = document.createElement("div");
     let htmlFullName = "";
+    let htmlContent = "";
+    let htmlImages = "";
 
     if (myId == data.user_id) {
         div.classList.add('inner-outgoing');
@@ -37,10 +44,27 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => { //khi nhận được sẽ cập 
         div.classList.add('inner-incomming');
         htmlFullName = `<div class="inner-name">${data.fullName}</div>`
     }
+    if (data.content) {
+        htmlContent = `<div class="inner-content">${data.content}</div> `
+
+    }
+    if (data.images) {
+        htmlImages += ` <div class="inner-images"> `;
+        for (const image of data.images) {
+            htmlImages +=
+            `
+            <img src="${image}">
+            `
+        }
+
+        htmlImages += `</div>`
+    }
 
     div.innerHTML = `
     ${htmlFullName}
-    <div class="inner-content">${data.content}</div>
+    ${htmlContent}
+    ${htmlImages}
+    
     `;
 
     body.insertBefore(div, boxTyping); //đảm bảo tin nhắn vừa gửi được đưa lên trước
@@ -100,7 +124,7 @@ if (emojPicker) {
         inputChat.value = inputChat.value + icon;
         //đảm bảo khi chèn icon luôn luôn vị trí cuối cùng
         const end = inputChat.value.length;
-        inputChat.setSelectionRange(end,end);
+        inputChat.setSelectionRange(end, end);
         inputChat.focus();
         showTyping();
         //end đảm bảo khi chèn icon luôn luôn vị trí cuối cùng

@@ -1,5 +1,8 @@
+// const { uploadToCloudinary } = require("../../helpers/uploadToCloudinary");
 const Chat = require("../../models/chat_model");
 const User = require("../../models/user_model")
+const  uploadToCloudinary = require("../../helpers/uploadToCloudinary")
+
 //get /chat
 module.exports.index = async (req, res) => {
     const userId = res.locals.user.id;
@@ -7,12 +10,17 @@ module.exports.index = async (req, res) => {
     //socketio
     _io.once('connection', (socket) => { //socket  là biếnvsocket con được tạo ra, còn socket tổng là io
         // console.log('a user connected', socket.id);
-        socket.on('CLIENT_SEND_MESSAGE',async(content) => {
-            //  lưu vào data base
-            // console.log(content)
+        socket.on('CLIENT_SEND_MESSAGE',async(data) => {
+            // data.image trả về dạng buffer nên ta phải chuyển nó thành link
+            let images =[];
+            for (const imageBuffer of data.images) {
+                const link = await uploadToCloudinary(imageBuffer);
+                images.push(link)
+            }
             const chat = new Chat({
                 user_id: userId,
-                content: content
+                content: data.content,
+                images:images
             })
             await chat.save();
 
@@ -20,7 +28,8 @@ module.exports.index = async (req, res) => {
              _io.emit("SERVER_RETURN_MESSAGE",{
                 user_id:userId,
                 fullName:fullName,
-                content:content
+                content:data.content,
+                images:images
              })
         })
         //nhận typing

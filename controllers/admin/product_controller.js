@@ -238,7 +238,7 @@ module.exports.createPost = async (req, res) => {
 //[get] admin/products/edit/:id
 module.exports.edit = async(req,res)=>{
     try {
-        console.log(req.params.id);
+        // console.log(req.params.id);
         const find = {
             deleted:false,
             _id:req.params.id
@@ -274,9 +274,9 @@ module.exports.editPatch = async(req,res)=>{
     // // thay object đó bằng object của body đã  gửi trước đó
     // }
     req.body.position= parseInt(req.body.position);
-    if(req.file){
-        req.body.thumbnail = `/upload/${req.file.filename}`;
-    }
+    // if(req.file){
+    //     req.body.thumbnail = `/upload/${req.file.filename}`;
+    // }
    try {
         const updatedBy={
             account_id:res.locals.user.id,
@@ -302,7 +302,7 @@ module.exports.detail = async(req,res)=>{
             _id:req.params.id
         }
         const product = await Product.findOne(find); 
-        console.log(product);
+        // console.log(product);
         res.render("admin/pages/products/detail", {
             pageTitle:product.title,
             product:product
