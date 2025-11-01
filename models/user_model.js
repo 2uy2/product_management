@@ -10,6 +10,17 @@ const userSchema = new mongoose.Schema({
     },
     phone:String,
     avatar:String,
+
+    friendList:[
+        {
+            user_id:String,
+            room_chat_id:String
+        }
+
+    ],
+    acceptFriends:Array,//mảng người gửi yêu cầu cho user
+    requestFriends:Array,//mảng user gửi yêu cầu cho user khác
+
     
     status:{
         type:String,
