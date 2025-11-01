@@ -18,7 +18,7 @@ module.exports.requireAuth =async (req,res,next)=>{
             const role = await Role.findOne({
                 _id:user.role_id
             })
-            res.locals.user = user; // tạo một biến local,
+            res.locals.user = user; // tạo một biến local cho frontend
             res.locals.role =role;
           
             next();
