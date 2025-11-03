@@ -1,11 +1,13 @@
 const express = require('express');
 const path = require('path');
-var methodOverride = require('method-override'); //dùng để nạp module, giả lập PUT, patch,.. khi trình duyệt chỉ hỗ trợ get, post
-const bodyParser = require('body-parser');
+var methodOverride = require('method-override'); //dùng để nạp module, giả lập PUT, patch,.. khi trình duyệt chỉ hỗ trợ gửi form get, post, dùng post để thay cho cá thẻ còn lại
+const bodyParser = require('body-parser'); // dùng để giúp đọc và hiểu dữ liệu mà client gửi lên server. ở dạng json
+//3 thư viện để hiển thị thông báo
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('express-flash'); 
-const moment = require("moment");
+// end 3 thư viện để hiển thị thông báo
+const moment = require("moment"); // thư viện giúp chuyển đổi ngày tháng
 const http = require('http');
 const { Server} = require("socket.io"); //sử dụng socketio
 

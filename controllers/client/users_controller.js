@@ -1,10 +1,28 @@
-const User = require("../../models/user_model")
+const User = require("../../models/user_model");
+const usersSocket =require("../../sockets/client/users_socket")
+
 //get users/not-friend
 module.exports.notFriend = async(req,res)=>{
+    //socket
+    usersSocket(res)
+    //end socket
+
     const userId = res.locals.user.id;
+    const myUser = await User.findOne({
+        _id:userId
+    })
+    const requestFiends = myUser.requestFriends;
+    const acceptFriends = myUser.acceptFriends;
     
     const users = await User.find({
-        _id:{$ne:userId}, //not equal (loại bỏ tìm kiếm)
+        // _id:{$ne:userId}, //not equal (loại bỏ tìm kiếm)
+        //_id:{$nin:requestFiend},//nin là loại những người id có trong danh sách requestFriend
+        //cú pháp thoã mạn hai điều kiện trên để không bị ghe đè lệnh
+        $and:[
+            {_id:{$ne:userId}},
+            {_id:{$nin:requestFiends}},
+            {_id:{$nin:acceptFriends}}
+        ],
         deleted:false,
         status:"active"
     }).select("avatar fullName");

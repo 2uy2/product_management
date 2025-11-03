@@ -57,7 +57,7 @@ if (tablePermissions){
                 })
             }
         });
-        console.log(permissions);
+        // console.log(permissions);
         if (permissions.length>0){
             const formChangePermissions = document.querySelector("#form-change-permissions");
             
@@ -68,6 +68,7 @@ if (tablePermissions){
     });
 }
 //end permisssions//
+
 //permissions data default//
 const dataRecords = document.querySelector("[data-records]");
 if(dataRecords){
