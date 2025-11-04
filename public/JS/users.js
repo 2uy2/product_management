@@ -46,5 +46,21 @@ if(listBtnRefuseFriend.length>0){
         })
     })
 }
-//chức năng từ chối kết bạn
+//end chức năng từ chối kết bạn
+//chức năng chấp nhận kết bạn
+const listBtnAcceptFriend = document.querySelectorAll("[btn-accept-friend]");
+if(listBtnAcceptFriend.length>0){
+    listBtnAcceptFriend.forEach(button =>{
+        button.addEventListener("click",()=>{
+            button.closest(".box-user").classList.add("accepted"); 
+            
+            //closetlấy ra thẻ cha muốn lấy mà không cần parent
+            // thêm thẻ add để thực hiện nút huỷ trên CSS
+            const userId = button.getAttribute("btn-accept-friend"); //lấy ra id người gửi kết bạn cho user
+            // console.log(userId)
+            socket.emit("CLIENT_ACCEPT_FRIEND",userId);
+        })
+    })
+}
+//chức năng chấp nhận kết bạn
 

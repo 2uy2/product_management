@@ -14,7 +14,7 @@ block main
         .row 
             each user in users
                 .col-6
-                    div(class="box-user add")
+                    div(class="box-user ")
                         div(class="inner-avatar")
                             img(
                                 src=(user.avatar ? user.avatar : "/images/defaultAvatar.png")
@@ -37,6 +37,11 @@ block main
                                     btn-deleted-friend
                                     disabled
                                 ) đã xoá 
+                                button(
+                                    class="btn btn-sm btn-secondary mr-1"
+                                    btn-accepted-friend
+                                    disabled
+                                ) đã chấp nhận 
 
     block script 
         script(type ="module" src="/js/users.js")
