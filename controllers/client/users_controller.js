@@ -32,9 +32,14 @@ module.exports.notFriend = async(req,res)=>{
         users:users
     })
 }
+
+//end get users/not-friend
+
 //get users/request
 module.exports.request = async(req,res)=>{
+    //socket
     usersSocket(res)
+    //end socket
     const userId = res.locals.user.id;
     const myUser = await User.findOne({
         _id:userId,
@@ -50,6 +55,28 @@ module.exports.request = async(req,res)=>{
 
     res.render("client/pages/users/request",{
         pageTitle:"lời mời đã gửi",
+        users:users
+    })
+}
+//end get users/request
+//get users/accept
+module.exports.accept = async(req,res)=>{
+    usersSocket(res)
+    const userId = res.locals.user.id;
+    const myUser = await User.findOne({
+        _id:userId,
+    })
+    const acceptFriends = myUser.acceptFriends;
+    const users = await User.find({
+        _id:{$in:acceptFriends},
+        status:"active",
+        deleted:false,
+    }).select("id avatar fullName");
+    // console.log(users)
+    
+
+    res.render("client/pages/users/accept",{
+        pageTitle:"lời mời đã nhận",
         users:users
     })
 }

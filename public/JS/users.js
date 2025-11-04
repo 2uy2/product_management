@@ -23,7 +23,7 @@ if(listBtnCancelFriend.length>0){
             button.closest(".box-user").classList.remove("add");
             
             //closetlấy ra thẻ cha muốn lấy mà không cần parent
-            // thêm thẻ add để thực hiện nút huỷ trên CSS
+            // thêm thẻ remove để thực hiện nút huỷ trên CSS
             const userId = button.getAttribute("btn-cancel-friend"); //lấy ra id người gửi kết bạn cho user
             // console.log(userId)
             socket.emit("CLIENT_CANCEL_FRIEND",userId);
@@ -31,4 +31,20 @@ if(listBtnCancelFriend.length>0){
     })
 }
 //end chức năng huỷ gửi yêu cầu
+//chức năng từ chối kết bạn
+const listBtnRefuseFriend = document.querySelectorAll("[btn-refuse-friend]");
+if(listBtnRefuseFriend.length>0){
+    listBtnRefuseFriend.forEach(button =>{
+        button.addEventListener("click",()=>{
+            button.closest(".box-user").classList.add("refuse"); 
+            
+            //closetlấy ra thẻ cha muốn lấy mà không cần parent
+            // thêm thẻ add để thực hiện nút huỷ trên CSS
+            const userId = button.getAttribute("btn-refuse-friend"); //lấy ra id người gửi kết bạn cho user
+            // console.log(userId)
+            socket.emit("CLIENT_REFUSE_FRIEND",userId);
+        })
+    })
+}
+//chức năng từ chối kết bạn
 
