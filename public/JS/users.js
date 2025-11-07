@@ -69,7 +69,7 @@ socket.on('SERVER_RETURN_LENGTH_ACCEPT_FRIEND',(data)=>{
     // console.log(data)
     const badgeUsersAccept = document.querySelector("[badge-users-accept]");
     const userId = badgeUsersAccept.getAttribute("badge-users-accept");
-    if(userId==data.userId){
+    if(userId==data.userId){ //xác nhận chỉ hiện thông báo cho đúng người
         badgeUsersAccept.innerHTML = data.lengthAcceptFriends
     }
     
