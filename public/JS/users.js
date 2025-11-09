@@ -62,7 +62,7 @@ if(listBtnAcceptFriend.length>0){
         })
     })
 }
-//chức năng chấp nhận kết bạn
+//end chức năng chấp nhận kết bạn
 
 //SERVER_RETURN_LENGTH_ACCEPT_FRIEND 
 socket.on('SERVER_RETURN_LENGTH_ACCEPT_FRIEND',(data)=>{
@@ -134,6 +134,20 @@ socket.on('SERVER_RETURN_INFO_ACCEPT_FRIEND',(data)=>{
             socket.emit("CLIENT_REFUSE_FRIEND",userId);
         })
         // end xoá lời mời kết bạn
+        // chấp nhận lời mời kết bạn
+        const BtnAcceptFriend = document.querySelectorAll("[btn-accept-friend]");
+
+        BtnAcceptFriend.addEventListener("click",()=>{
+            BtnAcceptFriend.closest(".box-user").classList.add("accepted"); 
+            
+            //closetlấy ra thẻ cha muốn lấy mà không cần parent
+            // thêm thẻ add để thực hiện nút huỷ trên CSS
+            const userId = button.getAttribute("btn-accept-friend"); //lấy ra id người gửi kết bạn cho user
+            // console.log(userId)
+            socket.emit("CLIENT_ACCEPT_FRIEND",userId);
+        })
+        // end  chấp nhận lời mời kết bạn
+
     }
 })
 // end SERVER_RETURN_INFO_ACCEPT_FRIEND
