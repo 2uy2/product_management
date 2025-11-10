@@ -69,6 +69,7 @@ socket.on('SERVER_RETURN_LENGTH_ACCEPT_FRIEND', (data) => {
     // console.log(data)
     const badgeUsersAccept = document.querySelector("[badge-users-accept]");
     const userId = badgeUsersAccept.getAttribute("badge-users-accept");
+    badgeUsersAccept.classList.add("active")
     if (userId == data.userId) { //xác nhận chỉ hiện thông báo cho đúng người
         badgeUsersAccept.innerHTML = data.lengthAcceptFriends
     }
@@ -79,8 +80,10 @@ socket.on('SERVER_RETURN_LENGTH_ACCEPT_FRIEND', (data) => {
 
 // SERVER_RETURN_INFO_ACCEPT_FRIEND
 socket.on('SERVER_RETURN_INFO_ACCEPT_FRIEND', (data) => {
+    // trang lời mời kết bạn
     const dataUsersAccept = document.querySelector("[data-users-accept]");
-    const userId = dataUsersAccept.getAttribute("data-users-accept");
+    if (dataUsersAccept){
+ const userId = dataUsersAccept.getAttribute("data-users-accept");
     if (userId == data.userId) { //xác nhận chỉ hiện thông báo cho đúng người
         //vẽ user ra giao diện
         const newBoxUser = document.createElement("div");
@@ -150,6 +153,23 @@ socket.on('SERVER_RETURN_INFO_ACCEPT_FRIEND', (data) => {
         // end  chấp nhận lời mời kết bạn
 
     }
+    }
+   
+    //hết trang lời mời kết bạn
+    
+    // trang danh sách người dùng
+    const dataUsersNotFriend = document.querySelector("[data-users-not-friend]");
+    if(dataUsersNotFriend){
+        const userId= dataUsersNotFriend.getAttribute("data-users-not-friend");
+        if (userId == data.userId) { //xác nhận chỉ hiện thông báo cho đúng người
+        //xoá A khỏi danh sách của B
+        const boxUserRemove = dataUsersNotFriend.querySelector(`[user-id="${data.infoUserA._id}"]`);
+        dataUsersNotFriend.removeChild(boxUserRemove);
+    }
+
+    }
+    //end trang danh sách người dùng
+
 })
 // end SERVER_RETURN_INFO_ACCEPT_FRIEND
 
