@@ -57,6 +57,14 @@ module.exports.loginPost=async (req,res)=>{
     res.redirect(req.get("referer"));
     return;
    }
+
+   res.cookie("tokenUser",user.tokenUser);
+   await User.updateOne({
+    _id:user.id
+   },{
+    statusOnline:"online"
+   });
+
    //lưu user_id vào model cart collection
    await Cart.updateOne({
         _id:req.cookies.cartId
@@ -65,12 +73,17 @@ module.exports.loginPost=async (req,res)=>{
     user_id:user.id
    })
 
-   res.cookie("tokenUser",user.tokenUser);
+   
    res.redirect("/")
 }
 
 //get user/logout
 module.exports.logout=async(req,res)=>{
+    await User.updateOne({
+        _id:res.locals.user.id
+    },{
+        statusOnline:"offline"
+    })
     res.clearCookie("tokenUser");
     res.redirect("/user/login");
 }
