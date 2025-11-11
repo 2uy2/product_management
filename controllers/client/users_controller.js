@@ -13,6 +13,10 @@ module.exports.notFriend = async (req, res) => {
     })
     const requestFiends = myUser.requestFriends;
     const acceptFriends = myUser.acceptFriends;
+    const friendList = myUser.friendList;
+    const friendListId = friendList.map(item=>{
+        return item.user_id;
+    })
 
     const users = await User.find({
         // _id:{$ne:userId}, //not equal (loại bỏ tìm kiếm)
@@ -31,6 +35,10 @@ module.exports.notFriend = async (req, res) => {
             {
                 _id: {
                     $nin: acceptFriends
+                }
+            },{
+                _id:{
+                    $ne: friendListId
                 }
             }
         ],
@@ -115,6 +123,12 @@ module.exports.friends = async (req, res) => {
     }).select("id avatar fullName statusOnline");
     // console.log(users)
     // res.send("ok")
+    users.forEach(user=>{
+        const  infoUser= friendList.find(item=>{
+            return item.user_id==user.id
+        });
+        user.roomChatId=infoUser.room_chat_id
+    })
 
     res.render("client/pages/users/friends", {
         pageTitle: "danh sách bạn bè",
