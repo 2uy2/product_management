@@ -12,7 +12,7 @@ module.exports.register = async (req,res)=>{
 }
 //post /user/register
 module.exports.registerPost = async (req,res)=>{
-    console.log(req.body)
+    // console.log(req.body)
     const existEmail =await  User.findOne({
         email:req.body.email,
         deleted:false
@@ -64,6 +64,11 @@ module.exports.loginPost=async (req,res)=>{
    },{
     statusOnline:"online"
    });
+   // SERVER_RETURN_USER_ONLINE
+   _io.once(`connection`,(socket)=>{
+    socket.broadcast.emit("SERVER_RETURN_USER_ONLINE",user.id)
+   })
+
 
    //lưu user_id vào model cart collection
    await Cart.updateOne({
@@ -84,6 +89,10 @@ module.exports.logout=async(req,res)=>{
     },{
         statusOnline:"offline"
     })
+    // SERVER_RETURN_USER_OFFLINE
+   _io.once(`connection`,(socket)=>{
+    socket.broadcast.emit("SERVER_RETURN_USER_OFFLINE",res.locals.user.id)
+   })
     res.clearCookie("tokenUser");
     res.redirect("/user/login");
 }
@@ -145,7 +154,7 @@ module.exports.otpPasswordPost=async(req,res)=>{
         email:email,
         otp:otp
     })
-    console.log(result);
+    // console.log(result);
     if(!result){
         req.flash("error","OTP không hợp lệ");
         res.redirect(req.get("referer"));
@@ -165,14 +174,14 @@ module.exports.resetPassword=async(req,res)=>{
         pageTitle:"Đổi mật khẩu"
     })
     const tokenUser= req.cookies.tokenUser;
-    console.log(tokenUser)
+    // console.log(tokenUser)
    
 }
 //post /user/password/reset
 module.exports.resetPasswordPost=async (req,res)=>{
     const password = req.body.password;
     const tokenUser= req.cookies.tokenUser;
-    console.log(tokenUser)
+    // console.log(tokenUser)
 
     await User.updateOne({
         tokenUser:tokenUser        

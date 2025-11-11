@@ -30,7 +30,7 @@ module.exports = (app) => {
     //  nên bên này dùng câu lệnh use
 
     app.use("/search", searchRoute);
-    app.use("/cart", cartRoute);
+    app.use("/cart",authMiddleware.requireAuth, cartRoute);
     app.use("/checkout", chekcoutRoute);
     app.use("/user", userRoute);
     app.use("/chat",authMiddleware.requireAuth, chatRoute);
