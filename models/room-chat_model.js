@@ -13,6 +13,10 @@ const roomChatSchema = new mongoose.Schema({
             
         }
     ],
+    deleted :{
+        type:Boolean,
+        default:false // giá trị mặc định nếu người ta k xét thì sẽ là false 
+    },  
     deletedAt: Date // tự thêm trường dữ liệu
 }, {
     timestamps: true // thời gian khởi tạo
