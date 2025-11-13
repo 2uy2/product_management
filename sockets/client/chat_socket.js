@@ -10,7 +10,7 @@ module.exports = async(req,res) => {
 
     _io.once('connection', (socket) => { //socket  là biếnvsocket con được tạo ra, còn socket tổng là io
         // console.log('a user connected', socket.id);
-        socket.join(roomChatId)
+        socket.join(roomChatId) //join giúp bả mật từ phía admin
         socket.on('CLIENT_SEND_MESSAGE', async (data) => {
             // data.image trả về dạng buffer nên ta phải chuyển nó thành link
             let images = [];

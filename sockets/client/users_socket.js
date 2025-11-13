@@ -178,11 +178,11 @@ module.exports = async (res) => {
                users: [
                   {
                      user_id: userId,
-                     role: "superadmin"
+                     role: "superAdmin"
                   },
                   {
                      user_id:myUserId,
-                     role:"superadmin"
+                     role:"superAdmin"
                   } 
                ]
             });
