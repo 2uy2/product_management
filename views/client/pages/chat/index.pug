@@ -4,6 +4,7 @@ include ../../mixins/box-head.pug
 
 block main
     .container.my-3 
+        include ../../partials/list-btn-users.pug 
 
         
 
@@ -61,3 +62,4 @@ block main
     
     block script 
         script(type ="module" src="/js/chat.js")
+        script(type ="module" src="/js/users.js")
