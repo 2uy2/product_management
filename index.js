@@ -1,9 +1,9 @@
 const express = require('express');
-const path = require('path');
+const path = require('path');//sử dụng cho tinimce
 var methodOverride = require('method-override'); //dùng để nạp module, giả lập PUT, patch,.. khi trình duyệt chỉ hỗ trợ gửi form get, post, dùng post để thay cho cá thẻ còn lại
-const bodyParser = require('body-parser'); // dùng để giúp đọc và hiểu dữ liệu mà client gửi lên server. ở dạng json
+const bodyParser = require('body-parser'); // dùng để giúp đọc và hiểu dữ liệu mà client gửi lên server. ở dạng json (req.body)
 //3 thư viện để hiển thị thông báo
-const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');//thư viện giúp đọc được cookies bên phía frontend
 const session = require('express-session');
 const flash = require('express-flash'); 
 // end 3 thư viện để hiển thị thông báo
@@ -27,8 +27,10 @@ const systemConfig = require("./config/system");//import config system
 
 const app = express();
 app.use(methodOverride('_method'));
-// parse application/x-www-form-urlencoded
+
+// parse application/x-www-form-urlencoded (áp dụng cho dữ liệu lấy từ phần form)
 app.use(bodyParser.urlencoded())
+
 const port = process.env.PORT;//import từ file env để dùng port
 
 

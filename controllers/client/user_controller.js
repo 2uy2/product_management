@@ -23,6 +23,7 @@ module.exports.registerPost = async (req,res)=>{
         return;
     }
     req.body.password=md5(req.body.password)//mã hoá mật khẩu trước khi lưu
+    req.body.tokenUser= generate.generateRandomString(30);
     const user = new User(req.body);
     await user.save();  
     res.cookie("tokenUser",user.tokenUser);

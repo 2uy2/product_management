@@ -1,6 +1,7 @@
 const systemConfig = require("../../config/system");
 const Account = require("../../models/acccount_model");
 const Role = require("../../models/role_model");
+const generate = require("../../helpers/generate");
 const md5 = require('md5');
 
 //get /admin/accounts
@@ -51,7 +52,9 @@ module.exports.createPost = async (req, res) => {
     }
     else {
         req.body.password =md5(req.body.password) ;// mã hoá string của mật khẩu
+        req.body.token = generate.generateRandomString(30)
         const record = new Account(req.body);
+        
         await record.save();
         res.redirect(`${systemConfig.prefixAdmin}/accounts`);
     }

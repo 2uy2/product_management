@@ -57,9 +57,8 @@ module.exports.index= async (req, res) => {
 
     const products = await Product.find(find) // hàm xuất dữ liệu ra
     .sort(sort)
-    .limit(objectPagination.limitItems)
-    .skip(objectPagination.skip);//hàm limit dùng để giới hạn dữ liệu được gọi ra
-     // hàm skip dùng để qua những object đầu trong dữ liệu
+    .limit(objectPagination.limitItems)//hàm limit dùng để giới hạn dữ liệu được gọi ra
+    .skip(objectPagination.skip); // hàm skip dùng để qua những object đầu trong dữ liệu để lấy trang muốn tìm
     //   end pagination 
     // end get products
 
