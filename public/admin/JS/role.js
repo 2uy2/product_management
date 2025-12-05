@@ -48,9 +48,7 @@ if (tablePermissions){
             else {
                 inputs.forEach((input,index) =>{
                     const checked = input.checked;
-                    // console.log(name);
-                    // console.log(index);
-                    // console.log(checked);
+                  
                     if(checked){
                          permissions[index].permissions.push(name);//chọn thứ tự trong mảng permissions để thêm vào object
                     }                  
@@ -62,7 +60,8 @@ if (tablePermissions){
             const formChangePermissions = document.querySelector("#form-change-permissions");
             
             const inputPermissions = formChangePermissions.querySelector("input[name='permissions']");
-            inputPermissions.value= JSON.stringify(permissions); //từ đây chuyển string mảng thành chuỗi json
+            inputPermissions.value= JSON.stringify(permissions); 
+            //vì inputPermissions hiện tại đang là object nên phải chuyển từ object sang string (string)
             formChangePermissions.submit();
         }
     });

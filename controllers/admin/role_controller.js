@@ -110,7 +110,7 @@ module.exports.permissions= async(req,res)=>{
 //[Patch]role/ permissions
 module.exports.permissionsPatch= async(req,res)=>{
    try {
-    const permissions = JSON.parse(req.body.permissions);//lấy phần json của ô input có name là permissions để chuyển sang dạng string
+    const permissions = JSON.parse(req.body.permissions);//lấy phần json của ô input có name là permissions để chuyển sang dạng object
     // console.log(permissions)
  
     for (const item of permissions) { // duyệt từng phần tử trong object
