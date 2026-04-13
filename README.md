@@ -5,7 +5,7 @@ trang client:https://product-management-ten-mu.vercel.app/
 
 ===================================================================================================================
  đây là website bán hàng có chức năng
- +quản lý sản phẩm (CRUD)
+ +quản lý sản phẩm,user (CRUD)
  +theo dõi trạng thái đơn hàng
  +validate trước khi gọi api
  +xác thực và phân quyền
